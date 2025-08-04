@@ -1,11 +1,6 @@
 <?php include('assets/inc/header.php') ?>
 <div class="page_price">
   <div class="inner">
-
-
-
-
-
     <section>
       <h2>制作費用について</h2>
       <p>Webサイトを新たに作成する際にかかる初期費用です。<br>
