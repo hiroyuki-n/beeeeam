@@ -1,20 +1,10 @@
-<?php
-// 画像ファイルの配列を定義
-$images = ['img01.png', 'img02.png', 'img03.png', 'img04.png', 'img05.png'];
-?>
-
-<div class="work_detail">
-    <header class="work_header">
-        <h1>あまみ理髪店</h1>
-        <p class="work_subtitle">奄美ロゴ</p>
-        <p class="work_description">奄美ロゴの制作実績です。</p>
-    </header>
-
-    <div class="work_gallery">
-        <?php foreach ($images as $image): ?>
-            <div class="gallery_item">
-                <img src="<?= $work_path . $image ?>" alt="あまみ理髪店ロゴ - <?= $image ?>">
-            </div>
-        <?php endforeach; ?>
-    </div>
-</div>
+<h1>あまみ理髪店</h1>
+<p>「あまみ理髪店」の新しいロゴをデザインしました。</p>
+<p>理髪店の象徴である赤と青のサインポールをモチーフに、温かみのある色合いとやわらかな曲線で親しみやすさを表現。</p>
+<p>文字部分はシンプルで読みやすい書体を採用し、伝統的な理髪店の雰囲気を残しつつ、現代的で洗練された印象に仕上げました。</p>
+<p>横組み・縦組み・シンボルマークの3パターンを制作し、店舗看板や名刺、ウェブサイトなど多様な媒体で使用可能なデザインとなっています。</p>
+<img src="<?= $work_path ?>img01.png">
+<img src="<?= $work_path ?>img02.png">
+<img src="<?= $work_path ?>img03.png">
+<img src="<?= $work_path ?>img04.png">
+<img src="<?= $work_path ?>img05.png">

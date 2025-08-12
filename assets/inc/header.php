@@ -4,6 +4,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <?php
+  // works/ディレクトリ内のページの場合はnoindexを追加
+  $current_url = $_SERVER['REQUEST_URI'] ?? '';
+  if (strpos($current_url, '/works/') === 0): ?>
+    <meta name="robots" content="noindex, nofollow">
+  <?php endif; ?>
   <title>デザインスタジオ ビーム</title>
   <link rel='stylesheet' href='/assets/css/style.css?<?= strtotime('now') ?>'>
 </head>
