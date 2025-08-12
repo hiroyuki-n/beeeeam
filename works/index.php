@@ -1,40 +1,32 @@
-<?php include('../assets/inc/header.php') ?>
-
 <?php
-$current_work = isset($_GET[array_key_first($_GET)]) ? array_key_first($_GET) : '';
-$current_work = in_array($current_work, $works) ? $current_work : '';
+include('../assets/inc/header.php');
 
+// 現在の制作実績を取得
+$current_work = '';
+if (!empty($_GET)) {
+  $current_work = array_key_first($_GET);
+  $current_work = in_array($current_work, $works) ? $current_work : '';
+}
+
+// 制作実績詳細ページの表示
 if ($current_work): ?>
   <div class="works_contents">
-    <div class="gallery">
-      <?php
-      $files = array_merge(
-        glob("$current_work/*.{jpg,jpeg,png,gif}", GLOB_BRACE),
-        glob("$current_work/*.mp4", GLOB_BRACE)
-      );
-      foreach ($files as $file):
-        $filename = basename($file);
-        if ($filename === 'thumbnail.png') continue;
-        if (strpos($filename, '_') === 0) continue; // ファイル名の頭に「_」がある場合はスキップ
-
-        $web_path = "../works/$current_work/" . $filename;
-        $ext = pathinfo($file, PATHINFO_EXTENSION);
-
-        if ($ext === 'mp4'): ?>
-          <video autoplay loop muted width="100%">
-            <source src="<?= $web_path ?>" type="video/mp4">
-          </video>
-        <?php else: ?>
-          <img src="<?= $web_path ?>">
-      <?php endif;
-      endforeach; ?>
-    </div>
+    <?php
+    $contents_file = "{$current_work}/contents.php";
+    if (file_exists($contents_file)) {
+      $work_path = "../works/{$current_work}/";
+      include($contents_file);
+    }
+    ?>
   </div>
 <?php else: ?>
+  <!-- 制作実績一覧の表示 -->
   <div class="works_list">
     <?php foreach ($works as $work): ?>
       <div class="btn">
-        <a href="?<?= $work ?>"><img src="<?= $work ?>/thumbnail.png"></a>
+        <a href="?<?= htmlspecialchars($work) ?>">
+          <img src="<?= htmlspecialchars($work) ?>/thumbnail.png" alt="<?= htmlspecialchars($work) ?>">
+        </a>
       </div>
     <?php endforeach; ?>
   </div>
