@@ -14,7 +14,7 @@ if ($current_work): ?>
     <?php
     $contents_file = "{$current_work}/contents.php";
     if (file_exists($contents_file)) {
-      $work_path = "../works/{$current_work}/";
+      $work_path = "{$current_work}/";
       include($contents_file);
     }
     ?>

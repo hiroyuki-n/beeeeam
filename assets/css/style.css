@@ -445,9 +445,20 @@ footer img {
 }
 
 .works_contents {
-  max-width: 800px;
+  max-width: 700px;
   margin: 0 auto;
   padding: 100px 20px;
+}
+.works_contents h1 {
+  text-align: center;
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 40px;
+}
+.works_contents p {
+  font-size: clamp(13px, 1.4vw, 15px);
+  line-height: 2;
+  margin-bottom: 1em;
 }
 .works_contents img {
   margin-bottom: 40px;

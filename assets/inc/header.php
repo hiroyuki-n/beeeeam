@@ -19,7 +19,7 @@
     <div class="upper">
       <div class="description">ビームは福岡の制作事務所です。主にウェブ制作をしています。</div>
       <div class="outsourcing">
-        <a href="/partnership.php">
+        <a href="partnership.php">
           <img src="/assets/img/common/header/outsourcing.svg">
           <span>外注先をお探しの制作会社様へ</span>
         </a>
@@ -28,12 +28,13 @@
     <div class="inner">
       <div class="logo">
         <img src="/assets/img/common/header/hand.svg">
-        <a href="/"><img src="/assets/img/common/header/logo.svg" alt="デザインスタジオ ビーム"></a>
+        <a href="index.php"><img src="/assets/img/common/header/logo.svg" alt="デザインスタジオ ビーム"></a>
       </div>
       <ul>
-        <li><a href="/works/"><img class="illust" src="/assets/img/common/icon/present.svg">実績</a></li>
-        <li><a href="/about.php"><img class="illust" src="/assets/img/common/icon/present.svg">できること</a></li>
-        <li><a href="/price.php"><img class="illust" src="/assets/img/common/icon/money.svg">費用について</a></li>
+        <li><a href="works/"><img class="illust" src="/assets/img/common/icon/present.svg">実績</a></li>
+        <li><a href="note/"><img class="illust" src="/assets/img/common/icon/present.svg">ノート</a></li>
+        <li><a href="about.php"><img class="illust" src="/assets/img/common/icon/present.svg">できること</a></li>
+        <li><a href="price.php"><img class="illust" src="/assets/img/common/icon/money.svg">費用について</a></li>
         <li><a href="#"><img class="illust" src="/assets/img/common/icon/voice.svg">よくあるご質問</a></li>
         <li><a href="#"><img class="illust" src="/assets/img/common/icon/mail.svg">お問い合わせ</a></li>
       </ul>
@@ -44,17 +45,18 @@
   <header class="sp_header">
     <div class="logo">
 
-      <a href="/"><img src="/assets/img/common/header/logo.svg" alt="デザインスタジオ ビーム"></a>
+      <a href="index.php"><img src="img/common/header/logo.svg" alt="デザインスタジオ ビーム"></a>
     </div>
     <div class="drawer_btn"></div>
   </header>
   <div class="drawer_content">
     <ul>
-      <li><a href="/works/"><img class="illust" src="/assets/img/common/icon/present.svg">実績</a></li>
-      <li><a href="/about.php"><img class="illust" src="/assets/img/common/icon/present.svg">できること</a></li>
-      <li><a href="/price.php"><img class="illust" src="/assets/img/common/icon/money.svg">費用について</a></li>
+      <li><a href="works/"><img class="illust" src="/assets/img/common/icon/present.svg">実績</a></li>
+      <li><a href="note/"><img class="illust" src="/assets/img/common/icon/present.svg">ノート</a></li>
+      <li><a href="about.php"><img class="illust" src="/assets/img/common/icon/present.svg">できること</a></li>
+      <li><a href="price.php"><img class="illust" src="/assets/img/common/icon/money.svg">費用について</a></li>
       <li><a href="#"><img class="illust" src="/assets/img/common/icon/voice.svg">よくあるご質問</a></li>
-      <li><a href="#"><img class="illust" src="/assets/img/common/icon/mail.svg">お問い合わせ</a></li>
+      <li><a href="#"><img class="illust" src="assets/img/common/icon/mail.svg">お問い合わせ</a></li>
     </ul>
 
   </div>
