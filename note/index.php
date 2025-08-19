@@ -1,84 +1,142 @@
 <?php
 include('../assets/inc/header.php');
 
-// 記事ディレクトリを自動で検出
-function getArticleDirectories()
+/**
+ * contents.php から $title を取得する共通関数
+ */
+function extractTitleFromContents($path, $default)
 {
-  $base_dir = __DIR__;
-  $directories = [];
+  if (file_exists($path)) {
+    $content = file_get_contents($path);
+    if (preg_match('/\$title\s*=\s*[\'"](.+?)[\'"]\s*;/', $content, $matches)) {
+      return $matches[1];
+    }
+  }
+  return $default;
+}
 
-  if ($handle = opendir($base_dir)) {
-    while (false !== ($entry = readdir($handle))) {
-      if ($entry != "." && $entry != ".." && is_dir($base_dir . '/' . $entry)) {
-        // index.phpとassets以外のディレクトリを記事として扱う
-        if ($entry !== 'assets' && $entry !== 'inc') {
-          $directories[] = $entry;
-        }
+/**
+ * カテゴリ内の記事一覧を取得
+ */
+function getCategoryArticles($category)
+{
+  $articles = [];
+  $category_path = __DIR__ . '/' . $category;
+
+  if (is_dir($category_path)) {
+    foreach (scandir($category_path) as $entry) {
+      if ($entry === '.' || $entry === '..') continue;
+      $subdir = $category_path . '/' . $entry;
+      if (is_dir($subdir) && file_exists($subdir . '/contents.php')) {
+        $articles[] = $entry;
       }
     }
-    closedir($handle);
   }
-
-  // ディレクトリ名でソート
-  sort($directories);
-  return $directories;
+  return $articles;
 }
 
-// 記事のタイトルを取得する関数
-function getArticleTitle($dir)
+/**
+ * 記事タイトルを取得
+ */
+function getNoteTitle($note_dir)
 {
-  $contents_file = $dir . '/contents.php';
-  if (file_exists($contents_file)) {
-    // contents.phpの内容を読み込み
-    $content = file_get_contents($contents_file);
+  return extractTitleFromContents(__DIR__ . '/' . $note_dir . '/contents.php', basename($note_dir));
+}
 
-    // h1タグからタイトルを抽出
-    if (preg_match('/<h1[^>]*>(.*?)<\/h1>/s', $content, $matches)) {
-      // HTMLタグを除去してテキストのみを取得
-      return strip_tags($matches[1]);
-    }
+/**
+ * カテゴリタイトルを取得
+ */
+function getCategoryTitle($category)
+{
+  return extractTitleFromContents(__DIR__ . '/' . $category . '/contents.php', $category);
+}
+
+/**
+ * ✅ note ディレクトリ直下からカテゴリを自動取得
+ * （contents.php を持つフォルダのみカテゴリ扱い）
+ */
+$category_dirs = [];
+foreach (scandir(__DIR__) as $entry) {
+  if ($entry === '.' || $entry === '..') continue;
+  $path = __DIR__ . '/' . $entry;
+  if (is_dir($path) && file_exists($path . '/contents.php')) {
+    $category_dirs[] = $entry;
   }
-
-  // タイトルが取得できない場合はディレクトリ名を返す
-  return $dir;
 }
 
-// 記事ディレクトリの一覧を取得
-$article_dirs = getArticleDirectories();
-
-// 現在の記事を取得
-$current_article = '';
-if (!empty($_GET)) {
-  $current_article = array_key_first($_GET);
-  $current_article = in_array($current_article, $article_dirs) ? $current_article : '';
+/**
+ * カテゴリごとの記事一覧を一括取得
+ */
+$category_articles = [];
+foreach ($category_dirs as $category) {
+  $category_articles[$category] = getCategoryArticles($category);
 }
 
-// 個別記事の表示
-if ($current_article): ?>
-  <div class="page_note">
+/**
+ * 現在のカテゴリとサブ記事を判定
+ */
+$current_category = '';
+$current_sub_article = '';
+
+foreach ($category_dirs as $category) {
+  if (isset($_GET[$category])) {
+    $current_category = $category;
+    foreach ($category_articles[$category] as $article) {
+      if (isset($_GET[$article])) {
+        $current_sub_article = $article;
+        break;
+      }
+    }
+    break;
+  }
+}
+
+
+
+?>
+
+<div class="page_note">
+  <nav>
+    <div class="note_nav">
+      <ul>
+        <?php foreach ($category_dirs as $category): ?>
+          <li>
+            <a href="/note/?<?= htmlspecialchars($category) ?>">
+              <?= htmlspecialchars(getCategoryTitle($category)) ?>
+            </a>
+            <?php if (!empty($category_articles[$category])): ?>
+              <ul>
+                <?php foreach ($category_articles[$category] as $article): ?>
+                  <li>
+                    <a href="/note/?<?= htmlspecialchars($category) ?>&<?= htmlspecialchars($article) ?>">
+                      <?= htmlspecialchars(getNoteTitle($category . '/' . $article)) ?>
+                    </a>
+                  </li>
+                <?php endforeach; ?>
+              </ul>
+            <?php endif; ?>
+          </li>
+        <?php endforeach; ?>
+      </ul>
+    </div>
+  </nav>
+
+  <?php if ($current_category && $current_sub_article): ?>
     <div class="inner">
-      <?php
-      $contents_file = "{$current_article}/contents.php";
-      include($contents_file);
-      ?>
+      <?php include(__DIR__ . "/{$current_category}/{$current_sub_article}/contents.php"); ?>
     </div>
-
-    <div class="article_navigation">
-      <a href="index.php" class="back_to_list">← 記事一覧に戻る</a>
+  <?php elseif ($current_category): ?>
+    <!-- カテゴリページ -->
+    <div class="inner">
+      <?php include(__DIR__ . "/{$current_category}/contents.php"); ?>
     </div>
-  </div>
-<?php else: ?>
-  <!-- 記事一覧の表示 -->
-  <div class="note_list">
-
-
-    <div class="articles_grid">
-      <?php foreach ($article_dirs as $dir): ?>
-        <?php $article_title = getArticleTitle($dir); ?>
-        <li><a href="?<?= htmlspecialchars($dir) ?>"><?= htmlspecialchars($article_title) ?></a></li>
-      <?php endforeach; ?>
+  <?php else: ?>
+    <div class="inner">
+      <!-- 一覧ページ -->
+      <h1>記事一覧</h1>
+      <p>カテゴリから記事を選択してください。</p>
     </div>
-  </div>
-<?php endif; ?>
+  <?php endif; ?>
+</div>
 
 <?php include('../assets/inc/footer.php'); ?>
